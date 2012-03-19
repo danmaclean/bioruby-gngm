@@ -33,7 +33,7 @@ optimize_windows/*
 #
 # For MacOS:
 #
-#.DS_Store
+.DS_Store
 
 # For TextMate
 #*.tmproj
