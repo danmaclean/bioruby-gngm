@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>Class: Bio::Util::Gngm</title>
+
+<link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../index.html">Home</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/bio/util/bio-gngm.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-calculate_clusters">#calculate_clusters</a>
+    
+    <li><a href="#method-i-calculate_densities">#calculate_densities</a>
+    
+    <li><a href="#method-i-calculate_signal">#calculate_signal</a>
+    
+    <li><a href="#method-i-close">#close</a>
+    
+    <li><a href="#method-i-clusters">#clusters</a>
+    
+    <li><a href="#method-i-collect_threads">#collect_threads</a>
+    
+    <li><a href="#method-i-densities">#densities</a>
+    
+    <li><a href="#method-i-draw_bands">#draw_bands</a>
+    
+    <li><a href="#method-i-draw_hit_count">#draw_hit_count</a>
+    
+    <li><a href="#method-i-draw_peaks">#draw_peaks</a>
+    
+    <li><a href="#method-i-draw_signal">#draw_signal</a>
+    
+    <li><a href="#method-i-draw_threads">#draw_threads</a>
+    
+    <li><a href="#method-i-frequency_histogram">#frequency_histogram</a>
+    
+    <li><a href="#method-i-get_band">#get_band</a>
+    
+    <li><a href="#method-i-get_insert_size_frequency">#get_insert_size_frequency</a>
+    
+    <li><a href="#method-i-get_unmapped_mate_frequency">#get_unmapped_mate_frequency</a>
+    
+    <li><a href="#method-i-hit_count">#hit_count</a>
+    
+    <li><a href="#method-i-peaks">#peaks</a>
+    
+    <li><a href="#method-i-signal">#signal</a>
+    
+    <li><a href="#method-i-snp_positions">#snp_positions</a>
+    
+    <li><a href="#method-i-threads">#threads</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../LICENSE_txt.html">LICENSE</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../Bio.html">Bio</a>
+  
+    <li><a href="../../Bio/DB.html">Bio::DB</a>
+  
+    <li><a href="../../Bio/DB/Pileup.html">Bio::DB::Pileup</a>
+  
+    <li><a href="../../Bio/DB/Vcf.html">Bio::DB::Vcf</a>
+  
+    <li><a href="../../Bio/Util.html">Bio::Util</a>
+  
+    <li><a href="../../Bio/Util/Gngm.html">Bio::Util::Gngm</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Bio::Util::Gngm</h1>
+
+  <div id="description" class="description">
+    
+<p>A <a href="Gngm.html">Bio::Util::Gngm</a> object represents a single region
+on a reference genome that is to be examined using the NGM technique
+described in Austin et al (2011) <a
+href="http://bar.utoronto.ca/ngm/description.html">bar.utoronto.ca/ngm/description.html</a>
+and <a
+href="http://onlinelibrary.wiley.com/doi/10.1111/j.1365-313X.2011.04619.x/abstract;jsessionid=F73E2DA628523B26205297CEE95526DA.d02t04">onlinelibrary.wiley.com/doi/10.1111/j.1365-313X.2011.04619.x/abstract;jsessionid=F73E2DA628523B26205297CEE95526DA.d02t04</a>
+Austin <em>et</em> <em>al</em> (2011) <strong>Next-generation</strong>
+<strong>mapping</strong> <strong>of</strong> <strong>Arabidopsis</strong>
+<strong>genes</strong> <em>Plant</em> <em>Journal</em>
+<strong>67</strong>(4):7125-725 .</p>
+
+<p><a href="Gngm.html">Bio::Util::Gngm</a> provides methods for finding SNPs,
+small INDELS and larger INDELS, creating histograms of polymorphism
+frequency,  creating and clustering density curves, creating signal plots
+and finding peaks. The ratio of reference-agreeing and reference-differing
+reads can be specified.</p>
+
+<h2 id="label-Background">Background</h2>
+
+<p>The basic concept of the technique is that density curves of polymorphism
+frequency across the region of interest are plotted and analysed. Each
+curve is called a thread, as it represents a polymorphism that was called
+with a statistic within a certain user-specified range, eg if a SNP was
+called with 50% non-reference bases from sequence reads (say all A), and
+50% reference reads (all T) then a discordant chastity statistic (ChD) of
+0.5 would be calculated and assigned to that SNP. Depending on the width
+and slide of the windows the user had specified, the frequency of SNPs with
+ChD in the specified range would be drawn in the same density curve. In the
+figure below each different coloured curve represents the frequency of SNPs
+with similar ChD.</p>
+
+<p><img src="../../images/threads.png" /></p>
+
+<p>Each of these density curves is called a thread. Threads are clustered into
+groups called bands and the bands containing the expected and control
+polymorphisms extracted. In the figure below, the control band is 0.5, the
+expected mutation in 1.0.  Typically and in the  Austin et al (2011)
+description of NGM the control band is the heterophasic band that
+represents natural variation, the thing taken to be the baseline. For a
+simple SNP, numerically the discordant chastity is expected to be 0.5.
+Conversely the expected band is the homophasic band that represents the
+selected for SNP region. Normally the discordant chastity is expected to be
+1.0.</p>
+
+<p><img src="../../images/bands.png" /></p>
+
+<p>The points where the signal from the control and expected band converge
+most is a likely candidate region for the causative mutation, so here at
+about the 1.6 millionth nucleotide.</p>
+
+<p><img src="../../images/signal.png" /></p>
+
+<h2 id="label-Example">Example</h2>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">'bio-gngm'</span>
+
+<span class="ruby-identifier">g</span> = <span class="ruby-constant">Bio</span><span class="ruby-operator">::</span><span class="ruby-constant">Util</span><span class="ruby-operator">::</span><span class="ruby-constant">Gngm</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">file</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;aln.sorted.bam&quot;</span>, 
+             :<span class="ruby-identifier">format</span> =<span class="ruby-operator">&gt;</span> :<span class="ruby-identifier">bam</span>, 
+             :<span class="ruby-identifier">fasta</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;reference.fasta&quot;</span>, 
+             :<span class="ruby-identifier">samtools</span> =<span class="ruby-operator">&gt;</span> {:<span class="ruby-identifier">r</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;chr1:1-100000&quot;</span>,
+                           :<span class="ruby-identifier">q</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">20</span>,
+                           :<span class="ruby-constant">Q</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">50</span>
+             },
+             :<span class="ruby-identifier">min_non_ref_freq</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0.5</span>,
+             :<span class="ruby-identifier">min_non_ref</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">3</span>
+  )
+  <span class="ruby-identifier">g</span>.<span class="ruby-identifier">snp_positions</span>
+  <span class="ruby-identifier">g</span>.<span class="ruby-identifier">collect_threads</span>(:<span class="ruby-identifier">start</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0.2</span>, :<span class="ruby-identifier">stop</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1.0</span>, :<span class="ruby-identifier">slide</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0.01</span>, :<span class="ruby-identifier">size</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0.1</span> )
+  [<span class="ruby-value">0.25</span>, <span class="ruby-value">0.5</span>, <span class="ruby-value">1.0</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">kernel_adjust</span><span class="ruby-operator">|</span> <span class="ruby-comment"># loop through different kernel values</span>
+    [<span class="ruby-value">4</span>, <span class="ruby-value">9</span>, <span class="ruby-value">11</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">|</span>  <span class="ruby-comment"># loop through different cluster numbers </span>
+
+      <span class="ruby-comment">#cluster</span>
+      <span class="ruby-identifier">g</span>.<span class="ruby-identifier">calculate_clusters</span>(:<span class="ruby-identifier">k</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">k</span>, :<span class="ruby-identifier">adjust</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">kernel_adjust</span>, :<span class="ruby-identifier">control_chd</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0.7</span>, :<span class="ruby-identifier">expected_chd</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0.5</span>)
+      <span class="ruby-comment">#draw thread and bands</span>
+      <span class="ruby-identifier">filename</span> = <span class="ruby-node">&quot;#{name}_#{k}_#{kernel_adjust}_all_threads.png&quot;</span>
+      <span class="ruby-identifier">g</span>.<span class="ruby-identifier">draw_threads</span>(<span class="ruby-identifier">filename</span>)
+
+      <span class="ruby-identifier">filename</span> = <span class="ruby-node">&quot;#{name}_#{k}_#{kernel_adjust}_clustered_bands.png&quot;</span>
+      <span class="ruby-identifier">g</span>.<span class="ruby-identifier">draw_bands</span>(<span class="ruby-identifier">filename</span>, :<span class="ruby-identifier">add_lines</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">100</span>,<span class="ruby-value">30000</span>,<span class="ruby-value">675432</span>])
+
+      <span class="ruby-comment">#draw signal</span>
+      <span class="ruby-identifier">filename</span> = <span class="ruby-node">&quot;#{name}_#{k}_#{kernel_adjust}_signal.png&quot;</span>
+      <span class="ruby-identifier">g</span>.<span class="ruby-identifier">draw_signal</span>(<span class="ruby-identifier">filename</span>)
+
+      <span class="ruby-comment">#auto-guess peaks</span>
+      <span class="ruby-identifier">filename</span> = <span class="ruby-node">&quot;#{name}_#{k}_#{kernel_adjust}_peaks.png&quot;</span>
+      <span class="ruby-identifier">g</span>.<span class="ruby-identifier">draw_peaks</span>(<span class="ruby-identifier">filename</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">g</span>.<span class="ruby-identifier">close</span> <span class="ruby-comment">#close BAM file</span>
+</pre>
+
+<h2 id="label-Polymorphisms+and+statistics">Polymorphisms and statistics</h2>
+
+<p><a href="Gngm.html">Bio::Util::Gngm</a> will allow you to look for
+polymorphisms that are SNPs, INDELS (as insertions uniquely, deletions
+uniquely or both) and longer insertions or deletions based on the insert
+size on paired-end read alignments. Each has a different statistic attached
+to it.</p>
+
+<h3 id="label-SNPs">SNPs</h3>
+
+<p>Simple Single Nucleotide Polymorphisms are called and its ChD statistic
+calculated as described in Austin et al (2011).</p>
+
+<h3 id="label-Short+INDELS">Short INDELS</h3>
+
+<p>These are called via SAMtools/BCFtools so are limited to the INDELs that
+can be called that way. The implementation at the moment only considers
+positions with one INDEL, sites with  more than one potential INDEL (ie
+multiple alleles) are disregarded as a position at all. See the <a
+href="../DB/Vcf.html">Bio::DB::Vcf</a> extensions in this package for a
+description of what constitutes an INDEL. The Vcf attribute <a
+href="../DB/Vcf.html#method-i-non_ref_allele_freq">Bio::DB::Vcf#non_ref_allele_freq</a>
+is used as the statistic in this case.</p>
+
+<h3 id="label-Insertion+Size">Insertion Size</h3>
+
+<p>Paired-end alignments have an expected distance between the paired reads
+(called insert size, or isize). Groups of reads in one position with larger
+or smaller than expected isize can indicate large deletions or insertions.
+Due to the details of read preparation the actual isize varies around a
+mean value with an expected proportion of 50% of reads having isize above
+the mean, and 50% below. To create density curves of insertion size
+frequency a  moves along the  window of user-specified size is moved along
+the reference genome in user-specified steps and all alignments in that
+window are examined. The Bio::DB::Sam#isize attribute is inspected for all
+alignments passing user-specified quality and the proportion of reads in
+that window that have an insert size &gt; the expected insert size is used
+as the statistic in this case. Proportions approaching 1 indicate that the
+sequenced organism has a deletion in that section relative to the
+reference. Proportions approaching 0 indicate an insertion in that section
+relative to the reference. Proportions around 0.5 indicate random variation
+of insert size, IE no INDEL. Seems to be a good idea to keep the window
+size similar to the read + isize. Useful in conjunction with assessing
+unmapped mates.</p>
+
+<h3 id="label-Unmapped+Mate+Pairs+%2F+Paired+Ends.">Unmapped Mate Pairs / Paired Ends.</h3>
+
+<p>Paired-end alignments where one mate finds a mapping but the other doesnt,
+can indicate an insertion/deletion larger than the insert size of the reads
+used (IE one read disappeared into the deleted section). This method uses a
+statistic based on proportion of mapped/unmapped reads in a window.
+Proportions of reads that are mapped but the mate is unmapped should be
+about 0.5 in a window over an  insertion/deletion (since the reads can go
+in either direction..). With no insertion deletion, the proportion should
+be closer to 1.</p>
+
+<h2 id="label-Input+types">Input types</h2>
+
+<p>A sorted BAM file is used as the source of alignments. Pileup is not used
+nor likely to be as it is a deprecated function within SAMtools. With the
+BAM file you will need the reference FASTA and the BAM index (.bai).</p>
+
+<h2 id="label-Workflow">Workflow</h2>
+<ol><li>
+<p>Create <a href="Gngm.html">Bio::Util::Gngm</a> object for a specific region
+in the reference genome</p>
+</li><li>
+<p>Polymorphisms are found</p>
+</li><li>
+<p>Density curves (threads) are calculated</p>
+</li><li>
+<p>Clustering density threads into bands is done</p>
+</li><li>
+<p>Signal is compared between band of interest and control</p>
+</li><li>
+<p>Figures are printed</p>
+</li></ol>
+
+<h2 id="label-Prerequisites">Prerequisites</h2>
+<ul><li>
+<p>Ruby 1.9.3 or greater (if you have an earlier version, try RVM for
+installing different versions of Ruby alongside your system install and
+switching nicely between them)</p>
+</li><li>
+<p>R 2.11.1 or greater</p>
+</li></ul>
+
+<p>The following ruby-gems are required</p>
+<ul><li>
+<p>rinruby &gt;= 2.0.2</p>
+</li><li>
+<p>bio-samtools &gt;= 0.5.0</p>
+</li></ul>
+
+<p>The following R packages are required</p>
+<ul><li>
+<p>ggplot2</p>
+</li><li>
+<p>peaks</p>
+</li></ul>
+
+<h2 id="label-Acknowledgements">Acknowledgements</h2>
+
+<h2 id="label-Using+bio-gngm">Using bio-gngm</h2>
+
+<p>The package is not yet released, a gem will be prepared soon. Until then
+scripts run fine when saved in the package scripts from within the package
+directory  with the below pre-amble at the top of the script. Run scripts
+from the root of the package directory.</p>
+
+<pre class="ruby"><span class="ruby-identifier">$LOAD_PATH</span>.<span class="ruby-identifier">unshift</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-keyword">__FILE__</span>), <span class="ruby-string">'..'</span>, <span class="ruby-string">'lib'</span>))
+<span class="ruby-identifier">$LOAD_PATH</span>.<span class="ruby-identifier">unshift</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-keyword">__FILE__</span>))
+<span class="ruby-identifier">require</span> <span class="ruby-string">'bio-samtools'</span>
+<span class="ruby-identifier">require</span> <span class="ruby-string">'bio-gngm'</span>
+</pre>
+
+<h2 id="label-API">API</h2>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="ERROR_MARGIN">ERROR_MARGIN
+        
+        <dd class="description"><p>Ruby 1.9.3 has a rounding error in the Range#step function such that some
+decimal places are rounded off to 0.00000000000000…1 above their place. So
+this constant is used to identify windows within a short distance and
+prevent any rounding errors. Hopefully I should be able to remove this in
+later versions.</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-file" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">file</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(options)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns a new <a href="Gngm.html">Bio::Util::Gngm</a> object.</p>
+
+<pre class="ruby"><span class="ruby-identifier">g</span> = <span class="ruby-constant">Bio</span><span class="ruby-operator">::</span><span class="ruby-constant">Util</span><span class="ruby-operator">::</span><span class="ruby-constant">Gngm</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">file</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;aln.sort.bam&quot;</span>, 
+            :<span class="ruby-identifier">format</span> =<span class="ruby-operator">&gt;</span> :<span class="ruby-identifier">bam</span>,
+            :<span class="ruby-identifier">samtools</span> =<span class="ruby-operator">&gt;</span> {:<span class="ruby-identifier">q</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">20</span>, :<span class="ruby-constant">Q</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">50</span>, :<span class="ruby-identifier">r</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Chr1:1-100000&quot;</span>}, 
+            :<span class="ruby-identifier">fasta</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;reference.fa&quot;</span>
+
+ )
+</pre>
+
+<p>Required parameters and defaults:</p>
+<ul><li>
+<p><code>:file =&gt; nil</code> -the path to the bam file containing the
+alignments, a .bai index must be present</p>
+</li><li>
+<p><code>:format =&gt; :bam</code> -always bam</p>
+</li><li>
+<p><code>:fasta =&gt; nil</code> -the path to the FASTA formatted reference
+sequence</p>
+</li><li>
+<p><code>:samtools =&gt; {:q =&gt; 20, :Q =&gt; 50, :r =&gt;
+&quot;Chr1:100-1100&quot;}</code> -options for samtools, see bio-samtools
+documentation for further details. The :r option is required to specify the
+region of interest</p>
+</li></ul>
+
+<p>Optional parameters and defaults: Most of these are parameters for specific
+methods and can be over-ridden when particular methods are called</p>
+<ul><li>
+<p><code>:variant_call =&gt; {:indels =&gt; false, :deletions_only =&gt;
+false, :insertions_only =&gt; false, :min_depth =&gt; 2, :max_depth =&gt;
+10000000, :mapping_quality =&gt; 10.0, :min_non_ref_count =&gt; 2,
+:ignore_reference_n =&gt; true}</code> -for SNP/Indel calling only one of
+<code>:indels, :deletions_only, :insertions_only</code> should be used.</p>
+</li><li>
+<p><code>:threads =&gt; {:start =&gt; 0.2, :stop =&gt; 1.0, :slide =&gt; 0.01,
+:size =&gt; 0.1 }</code> -options for thread windows</p>
+</li><li>
+<p><code>:insert_size_opts =&gt; {:ref_window_size =&gt; 200,
+:ref_window_slide =&gt; 50, :isize =&gt; 150}</code> -options for insert
+size calculations</p>
+</li><li>
+<p><code>:histo_bin_width =&gt; 250000</code> -bin width for histograms of SNP
+frequency</p>
+</li><li>
+<p><code>:graphics =&gt; {:width =&gt; 1000, :height =&gt; 500, :draw_legend
+=&gt; false, :add_boxes =&gt; nil}</code> -graphics output options,
+<code>:draw_legend</code> draws a legend plot for band figures only</p>
+</li><li>
+<p><code>:peaks =&gt; {:sigma =&gt; 3.0, :threshold =&gt; 10.0, :background
+=&gt; false, :iterations =&gt; 13, :markov =&gt; false, :window =&gt; 3,
+:range =&gt; 10000}</code> -parameters for automated peak calling,
+parameters relate to R package Peaks. <code>:range</code> is the width of
+the box to draw on the peak plot</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 342</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">options</span>)
+  <span class="ruby-ivar">@file</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@snp_positions</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@threads</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@densities</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@clusters</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@control_band</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@expected_band</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@signal</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@peak_indices</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@peak_y_values</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@density_max_y</span> = <span class="ruby-keyword">nil</span> <span class="ruby-comment">#the maximum y value needed to plot the entire set density plots of threads and maintain a consistent scale for plots</span>
+  <span class="ruby-ivar">@colours</span> = <span class="ruby-node">]#A6CEE3 #1F78B4 #B2DF8A #33A02C #FB9A99 #E31A1C #FDBF6F #FF7F00 #CAB2D6 #6A3D9A #FFFF99 #B15928]</span>
+  <span class="ruby-ivar">@thread_colours</span> = {}
+  <span class="ruby-ivar">@opts</span> = {
+    <span class="ruby-value">:file</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>,
+    <span class="ruby-value">:format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:bam</span>,
+    <span class="ruby-value">:fasta</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>,
+    <span class="ruby-value">:samtools</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:q</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">20</span>, <span class="ruby-value">:Q</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">50</span>},
+    <span class="ruby-comment">##indels = call any and only indels.. :deletions_only :insertions_only = only one tyoe</span>
+    <span class="ruby-comment">## some options are designed to be equivalent to vcfutils.pl from bvftools options when using vcf</span>
+    <span class="ruby-comment">##:min_depth (-d)</span>
+    <span class="ruby-comment">##:max_depth (-D)</span>
+    <span class="ruby-comment">##:mapping_quality (-Q) minimum RMS mappinq quality for SNPs (mq in info fields)</span>
+    <span class="ruby-comment">##:min_non_ref_count (-a) minimum num of alt bases ... the sum of the last two numbers in DP4 in info fields</span>
+    <span class="ruby-comment">##doesnt do anything with window filtering or pv values... </span>
+    <span class="ruby-value">:insert_size_opts</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:ref_window_size</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">200</span>, <span class="ruby-value">:ref_window_slide</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">50</span>, <span class="ruby-value">:isize</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">150</span>},
+    <span class="ruby-value">:variant_call</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:indels</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">:deletions_only</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">:insertions_only</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">:min_depth</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span>, <span class="ruby-value">:max_depth</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">10000000</span>, <span class="ruby-value">:mapping_quality</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">10.0</span>, <span class="ruby-value">:min_non_ref_count</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span>, <span class="ruby-value">:ignore_reference_n</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>},
+    <span class="ruby-value">:histo_bin_width</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">250000</span>,
+    <span class="ruby-value">:graphics</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:width</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1000</span>, <span class="ruby-value">:height</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">500</span>, <span class="ruby-value">:draw_legend</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">:add_boxes</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>},
+    <span class="ruby-value">:adjust</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>, 
+    <span class="ruby-value">:control_chd</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0.5</span>, 
+    <span class="ruby-value">:expected_chd</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1.0</span>,
+    <span class="ruby-value">:threads</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:start</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0.2</span>, <span class="ruby-value">:stop</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1.0</span>, <span class="ruby-value">:slide</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0.01</span>, <span class="ruby-value">:size</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0.1</span> },
+    <span class="ruby-value">:peaks</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:sigma</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">3.0</span>, <span class="ruby-value">:threshold</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">10.0</span>, <span class="ruby-value">:background</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">:iterations</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">13</span>, <span class="ruby-value">:markov</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">:window</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">3</span>, <span class="ruby-value">:range</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">10000</span>} <span class="ruby-comment">##range is the width of the box to draw on the peak plot</span>
+  }
+  <span class="ruby-ivar">@opts</span>.<span class="ruby-identifier">merge!</span>(<span class="ruby-identifier">options</span>)
+  <span class="ruby-identifier">open_file</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-calculate_clusters" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">calculate_clusters</span><span
+            class="method-args">( opts={} )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Calculates the k-means clusters of density curves (groups threads into
+bands), [density curve y values] ]&lt;/tt&gt; Calculates the clusters using
+the R function +kmeans()+ Recalculates @densities as it does with <a
+href="Gngm.html#method-i-calculate_densities">#calculate_densities</a>, so
+clustering can be done without having to explicitly call <a
+href="Gngm.html#method-i-calculate_densities">#calculate_densities</a>. 
+Clusters are recalulated every time regardless of whether its been done
+before contains anything or not so is useful for trying out different
+values for the parameters. When clusters are calculated the expected and
+control bands are compared with the <a
+href="Gngm.html#method-i-calculate_signal">#calculate_signal</a> method and
+the @signal array populated. Resets the instance variables @control_band,
+@expected_band, @signal, @peak_indices, @peak_y_values and @clusters</p>
+
+<p>Options and defaults</p>
+<ul><li>
+<p><code>:k =&gt; 9</code>, -the number of clusters for the R
+<code>kmeans</code> function</p>
+</li><li>
+<p><code>:seed =&gt; false</code> -set this to a number to make the randomized
+clustering reproducible</p>
+</li><li>
+<p><code>:control_chd =&gt; 0.5</code> -the value of the control thread/window</p>
+</li><li>
+<p><code>:expected_chd =&gt; 1.0</code> -the value of the expected
+thread/window</p>
+</li><li>
+<p><code>:adjust =&gt; 1.0</code> -the kernel adjustment parameter for the R
+<code>density</code> function</p>
+</li><li>
+<p><code>:pseudo =&gt; false</code> - force the densities into a single thread
+cluster when the number of distinct threads with SNPs is &lt; the value of
+k. This is only useful in a situation where the spread of the statistic is
+very limited. EG for using mapped/unmapped mate pairs then almost all
+windows will have proportion 1.0 but a tiny number will be close to 0.5
+with few other values considered.</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="calculate_clusters-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 764</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">calculate_clusters</span>( <span class="ruby-identifier">opts</span>={} )
+  <span class="ruby-identifier">options</span> = {<span class="ruby-value">:k</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">9</span>, <span class="ruby-value">:seed</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">:adjust</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>, <span class="ruby-value">:control_chd</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0.5</span>, <span class="ruby-value">:expected_chd</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1.0</span>, <span class="ruby-value">:pseudo</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>}
+  <span class="ruby-identifier">options</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:pseudo</span>]
+    <span class="ruby-identifier">put_threads_into_individual_clusters</span>(<span class="ruby-identifier">options</span>)
+    <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">r</span> = <span class="ruby-identifier">new_r</span>
+  <span class="ruby-identifier">names</span> = []
+  <span class="ruby-identifier">name</span> = <span class="ruby-string">&quot;a&quot;</span>
+  <span class="ruby-ivar">@control_band</span> = <span class="ruby-keyword">nil</span> <span class="ruby-comment">#needs resetting as we are working with new clusters</span>
+  <span class="ruby-ivar">@expected_band</span> = <span class="ruby-keyword">nil</span> <span class="ruby-comment">#needs resetting as we are working with new clusters</span>
+  <span class="ruby-ivar">@signal</span> = <span class="ruby-keyword">nil</span> <span class="ruby-comment">#needs resetting as we are working with new clusters</span>
+  <span class="ruby-ivar">@peak_indices</span> = <span class="ruby-keyword">nil</span> <span class="ruby-comment">#needs resetting as we are working with new cluster</span>
+  <span class="ruby-ivar">@peak_y_values</span> = <span class="ruby-keyword">nil</span> <span class="ruby-comment">#needs resetting as we are working with new cluster</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">calculate_densities</span>(<span class="ruby-identifier">options</span>[<span class="ruby-value">:adjust</span>]).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">density_array</span> = <span class="ruby-identifier">d</span>.<span class="ruby-identifier">last</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">assign</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">density_array</span> <span class="ruby-comment">##although windows go in in numeric order, r wont allow numbers as names in data frames so we need a proxy</span>
+    <span class="ruby-identifier">names</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{name}=#{name}&quot;</span>
+    <span class="ruby-identifier">name</span> = <span class="ruby-identifier">name</span>.<span class="ruby-identifier">next</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">data_frame_command</span> = <span class="ruby-string">&quot;data = data.frame(&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">names</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;,&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;)&quot;</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-identifier">data_frame_command</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;set.seed(#{options[:seed]})&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:seed</span>]
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;k = kmeans(cor(data),#{options[:k]},nstart=1000)&quot;</span>
+  <span class="ruby-ivar">@clusters</span> = <span class="ruby-identifier">r</span>.<span class="ruby-identifier">pull</span> <span class="ruby-string">&quot;k$cluster&quot;</span> <span class="ruby-comment">##clusters are returned in the order in densities</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">quit</span>
+  <span class="ruby-comment">##now set the cluster colours.. </span>
+  <span class="ruby-identifier">colours</span> = <span class="ruby-node">]#A6CEE3 #1F78B4 #B2DF8A #33A02C #FB9A99 #E31A1C #FDBF6F #FF7F00 #CAB2D6 #6A3D9A #FFFF99 #B15928]</span>
+  <span class="ruby-identifier">ci</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">col_nums</span> = {} <span class="ruby-comment">##hash of cluster numbers and colours</span>
+  <span class="ruby-ivar">@clusters</span>.<span class="ruby-identifier">each_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">col_nums</span>[<span class="ruby-ivar">@clusters</span>[<span class="ruby-identifier">i</span>]]
+      <span class="ruby-identifier">col_nums</span>[<span class="ruby-ivar">@clusters</span>[<span class="ruby-identifier">i</span>]] = <span class="ruby-identifier">colours</span>[<span class="ruby-identifier">ci</span>]
+      <span class="ruby-identifier">ci</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">ci</span> = <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">ci</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">11</span>
+    <span class="ruby-keyword">end</span>
+   <span class="ruby-ivar">@thread_colours</span>[<span class="ruby-keyword">self</span>.<span class="ruby-identifier">densities</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">first</span>] = <span class="ruby-identifier">col_nums</span>[<span class="ruby-ivar">@clusters</span>[<span class="ruby-identifier">i</span>]]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@control_band</span> = <span class="ruby-identifier">get_band</span>(<span class="ruby-identifier">options</span>[<span class="ruby-value">:control_chd</span>])
+  <span class="ruby-ivar">@expected_band</span> = <span class="ruby-identifier">get_band</span>(<span class="ruby-identifier">options</span>[<span class="ruby-value">:expected_chd</span>])
+  <span class="ruby-identifier">calculate_signal</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- calculate_clusters-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- calculate_clusters-method -->
+
+    
+      <div id="method-i-calculate_densities" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">calculate_densities</span><span
+            class="method-args">(adjust=1)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Sets and returns the array of arrays <code>[window, [density curve x
+values], [density curve y values] ]</code> Calculates the density curve
+using the R function +density()+ Always sets @densities regardless of
+whether it contains anything or not so is useful for trying out adjustment
+values. Ignores threads with fewer than 2 polymorphisms since density can’t
+be computed with so few polymorphisms.</p>
+
+<p>Options and defaults</p>
+<ul><li>
+<p><code>adjust = 1</code>, -the kernel adjustment parameter for the R
+<code>density</code> function</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="calculate_densities-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 679</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">calculate_densities</span>(<span class="ruby-identifier">adjust</span>=<span class="ruby-value">1</span>)
+  <span class="ruby-identifier">r</span> = <span class="ruby-identifier">new_r</span>
+  <span class="ruby-identifier">densities</span> = []
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">threads</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">2</span> <span class="ruby-comment">##length of density array is smaller or == threads, since too small windows are ignored...</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">curr_win</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">last</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;d = density(curr_win,n=240,kernel=\&quot;gaussian\&quot;, from=#{@snp_positions.first[0]}, to=#{@snp_positions.last[0]}, adjust=#{adjust})&quot;</span>
+    <span class="ruby-identifier">densities</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">t</span>.<span class="ruby-identifier">first</span>, <span class="ruby-identifier">r</span>.<span class="ruby-identifier">pull</span>(<span class="ruby-string">&quot;d$x&quot;</span>), <span class="ruby-identifier">r</span>.<span class="ruby-identifier">pull</span>(<span class="ruby-string">&quot;d$y&quot;</span>)]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">quit</span>
+  <span class="ruby-ivar">@densities</span> = <span class="ruby-identifier">densities</span>
+  <span class="ruby-identifier">calculate_density_max_y</span> <span class="ruby-comment">##need to re-do every time we get new densities</span>
+  <span class="ruby-identifier">densities</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- calculate_densities-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- calculate_densities-method -->
+
+    
+      <div id="method-i-calculate_signal" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">calculate_signal</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns an array of values representing the ratio of average of the
+expected threads/windows to the control threads/windows. Sets @signal, the
+signal curve.</p>
+          
+
+          
+          <div class="method-source-code" id="calculate_signal-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 969</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">calculate_signal</span>
+   <span class="ruby-identifier">r</span> = <span class="ruby-identifier">new_r</span>
+    <span class="ruby-identifier">name</span> = <span class="ruby-string">&quot;a&quot;</span>
+    <span class="ruby-identifier">control_names</span> = []
+    <span class="ruby-identifier">expected_names</span> = []
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">densities</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@control_band</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">d</span>.<span class="ruby-identifier">first</span>)
+        <span class="ruby-identifier">density_array</span> = <span class="ruby-identifier">d</span>.<span class="ruby-identifier">last</span>
+        <span class="ruby-identifier">r</span>.<span class="ruby-identifier">assign</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">density_array</span> <span class="ruby-comment">##although windows go in in numeric order, r wont allow numbers as names in data frames so we need a proxy</span>
+        <span class="ruby-identifier">control_names</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{name}=#{name}&quot;</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@expected_band</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">d</span>.<span class="ruby-identifier">first</span>)
+        <span class="ruby-identifier">density_array</span> = <span class="ruby-identifier">d</span>.<span class="ruby-identifier">last</span>
+        <span class="ruby-identifier">r</span>.<span class="ruby-identifier">assign</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">density_array</span>
+        <span class="ruby-identifier">expected_names</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{name}=#{name}&quot;</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">name</span> = <span class="ruby-identifier">name</span>.<span class="ruby-identifier">next</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">data_frame_command</span> = <span class="ruby-string">&quot;control = data.frame(&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">control_names</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;,&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;)&quot;</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-identifier">data_frame_command</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-string">&quot;control_mean = apply(control, 1, function(ecks) mean((as.numeric(ecks))) )&quot;</span>
+    <span class="ruby-identifier">data_frame_command</span> = <span class="ruby-string">&quot;expected = data.frame(&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">expected_names</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;,&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;)&quot;</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-identifier">data_frame_command</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-string">&quot;expected_mean = apply(expected, 1, function(ecks) mean((as.numeric(ecks))) )&quot;</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-string">&quot;signal = expected_mean / control_mean&quot;</span>
+    <span class="ruby-identifier">signal</span> = <span class="ruby-identifier">r</span>.<span class="ruby-identifier">pull</span> <span class="ruby-string">&quot;signal&quot;</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">quit</span>
+    <span class="ruby-ivar">@signal</span> = <span class="ruby-identifier">signal</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- calculate_signal-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- calculate_signal-method -->
+
+    
+      <div id="method-i-close" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">close</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>for BAM files calls Bio::DB::Sam#close to close the connections to input
+files safely</p>
+          
+
+          
+          <div class="method-source-code" id="close-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 399</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">close</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:format</span>]
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:bam</span> <span class="ruby-keyword">then</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">close</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- close-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- close-method -->
+
+    
+      <div id="method-i-clusters" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">clusters</span><span
+            class="method-args">(opts={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the array instance variable @clusters. The R function +kmeans()+ is
+used to calculate the clusters based on a correlation matrix of the density
+curves. If @clusters is nil when called this method will run the <a
+href="Gngm.html#method-i-calculate_clusters">#calculate_clusters</a> method
+and set @clusters With this method you cannot recalculate the clusters
+after they have been done once.</p>
+
+<p>Options and defaults</p>
+<ul><li>
+<p><code>:k =&gt; 9</code>, -the number of clusters for the R
+<code>kmeans</code> function</p>
+</li><li>
+<p><code>:seed =&gt; false</code> -set this to a number to make the randomized
+clustering reproducible</p>
+</li><li>
+<p><code>:control_chd =&gt; 0.5</code> -the value of the control thread/window</p>
+</li><li>
+<p><code>:expected_chd =&gt; 1.0</code> -the value of the expected
+thread/window</p>
+</li><li>
+<p><code>:adjust =&gt; 1.0</code> -the kernel adjustment parameter for the R
+<code>density</code> function</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="clusters-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 748</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">clusters</span>(<span class="ruby-identifier">opts</span>={})
+  <span class="ruby-ivar">@clusters</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">calculate_clusters</span>(<span class="ruby-identifier">opts</span>={})
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- clusters-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- clusters-method -->
+
+    
+      <div id="method-i-collect_threads" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">collect_threads</span><span
+            class="method-args">(opts=@opts[:threads])</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Resets contents of instance variable @threads and returns an array of
+arrays <code>[[window 1, snp position 1, snp position 2 ... snp position
+n],[window 2, snp position 1, snp position 2 ... snp position n] ]</code>. 
+Always sets @threads regardless of whether it contains anything or not so
+is useful for trying out different window sizes etc</p>
+
+<p>Options and defaults:</p>
+<ul><li>
+<p><code>:start =&gt; 0.2</code> -first window</p>
+</li><li>
+<p><code>:stop =&gt; 1.0</code> -last window</p>
+</li><li>
+<p><code>:slide =&gt; 0.01</code> -distance between windows</p>
+</li><li>
+<p><code>:size =&gt; 0.1</code> -window width</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="collect_threads-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 597</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">collect_threads</span>(<span class="ruby-identifier">opts</span>=<span class="ruby-ivar">@opts</span>[<span class="ruby-value">:threads</span>])
+  <span class="ruby-identifier">opts</span>[<span class="ruby-value">:slide</span>] = <span class="ruby-value">0.000001</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:slide</span>] <span class="ruby-operator">&lt;</span> <span class="ruby-value">0.000001</span> <span class="ruby-comment">##to allow for the rounding error in the step function... </span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">RuntimeError</span>, <span class="ruby-string">&quot;snp positions have not been calculated yet&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@snp_positions</span>
+  <span class="ruby-identifier">start</span>,<span class="ruby-identifier">stop</span>,<span class="ruby-identifier">slide</span>,<span class="ruby-identifier">size</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:start</span>].<span class="ruby-identifier">to_f</span>, <span class="ruby-identifier">opts</span>[<span class="ruby-value">:stop</span>].<span class="ruby-identifier">to_f</span>, <span class="ruby-identifier">opts</span>[<span class="ruby-value">:slide</span>].<span class="ruby-identifier">to_f</span>, <span class="ruby-identifier">opts</span>[<span class="ruby-value">:size</span>].<span class="ruby-identifier">to_f</span>
+  <span class="ruby-identifier">arr</span> = []
+  (<span class="ruby-identifier">start</span><span class="ruby-operator">..</span><span class="ruby-identifier">stop</span>).<span class="ruby-identifier">step</span>(<span class="ruby-identifier">slide</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">win</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">arr</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">win</span>, <span class="ruby-ivar">@snp_positions</span>.<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">win</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">win</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">size</span> }.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">y</span><span class="ruby-operator">|</span> <span class="ruby-identifier">y</span>.<span class="ruby-identifier">first</span>} ]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@threads</span> = <span class="ruby-identifier">arr</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- collect_threads-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- collect_threads-method -->
+
+    
+      <div id="method-i-densities" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">densities</span><span
+            class="method-args">(adjust=1)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the instance variable @densities array of arrays <code>[window,
+[density curve x values], [density curve y values] ]</code>. The R function
++density()+ is used to calculate the values. If @densities is nil when
+called this method will run the <a
+href="Gngm.html#method-i-calculate_densities">#calculate_densities</a>
+method and set @densities With this method you cannot recalculate the
+densities after they have been done once.</p>
+
+<p>Options and defaults</p>
+<ul><li>
+<p><code>adjust = 1</code>, -the kernel adjustment parameter for the R
+<code>density</code> function</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="densities-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 669</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">densities</span>(<span class="ruby-identifier">adjust</span>=<span class="ruby-value">1</span>)
+  <span class="ruby-ivar">@densities</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">calculate_densities</span>(<span class="ruby-identifier">adjust</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- densities-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- densities-method -->
+
+    
+      <div id="method-i-draw_bands" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">draw_bands</span><span
+            class="method-args">(file="myfile.png", optsa={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Draws the clustered bands that correspond to the expected and control
+window in a single PNG file <code>file</code></p>
+
+<p>Options and defaults</p>
+<ul><li>
+<p><code>:add_lines =&gt; nil</code> -if an array of positions is provided eg
++[100,345] , vertical lines will be drawn at these positions. Useful for
+indicating feature positions on the plot</p>
+</li><li>
+<p><code>:width =&gt; 1000</code> -width of the PNG in pixels</p>
+</li><li>
+<p><code>:height =&gt; 500</code> -height of the PNG in pixels</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="draw_bands-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 702</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">draw_bands</span>(<span class="ruby-identifier">file</span>=<span class="ruby-string">&quot;myfile.png&quot;</span>, <span class="ruby-identifier">optsa</span>={})
+  <span class="ruby-identifier">opts</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:graphics</span>].<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">optsa</span>)
+  <span class="ruby-identifier">pp</span> <span class="ruby-identifier">optsa</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">RuntimeError</span>, <span class="ruby-string">&quot;Can't draw threads until clustering is done&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@clusters</span>
+  <span class="ruby-comment">#uses R's standard plot functions.</span>
+  <span class="ruby-comment">##same as draw_threads, but skips threads that aren't on the bands lists</span>
+  <span class="ruby-comment">## </span>
+  <span class="ruby-identifier">r</span> = <span class="ruby-identifier">new_r</span> 
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;png('#{file}', width=#{opts[:width]}, height=#{opts[:height]})&quot;</span>
+  <span class="ruby-identifier">plot_open</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">densities</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@control_band</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">t</span>[<span class="ruby-value">0</span>]) <span class="ruby-keyword">or</span> <span class="ruby-ivar">@expected_band</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">t</span>[<span class="ruby-value">0</span>])
+        <span class="ruby-identifier">r</span>.<span class="ruby-identifier">dx</span> = <span class="ruby-identifier">t</span>[<span class="ruby-value">1</span>]
+        <span class="ruby-identifier">r</span>.<span class="ruby-identifier">dy</span> = <span class="ruby-identifier">t</span>[<span class="ruby-value">2</span>]
+        <span class="ruby-identifier">r</span>.<span class="ruby-identifier">curr_win</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">last</span>
+        <span class="ruby-comment">#r.eval &quot;d = density(curr_win,n=240,kernel=\&quot;gaussian\&quot;, from=#{@snp_positions.first[0]}, to=#{@snp_positions.last[0]})&quot;</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">plot_open</span>
+          <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;lines(dx, dy, col=\&quot;#{@thread_colours[t.first]}\&quot;)&quot;</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;plot(dx, dy, type=\&quot;l\&quot;, col=\&quot;#{@thread_colours[t.first]}\&quot;,ylim=c(0,#{density_max_y}), main='#{file}',xlab='position', ylab='density')&quot;</span>
+          <span class="ruby-identifier">plot_open</span> = <span class="ruby-keyword">true</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">label1</span> = <span class="ruby-string">&quot;Control band: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@control_band</span>.<span class="ruby-identifier">min</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; &lt; ChD &lt; &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@control_band</span>.<span class="ruby-identifier">max</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">label2</span> = <span class="ruby-string">&quot;Expected band: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@expected_band</span>.<span class="ruby-identifier">min</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; &lt; ChD &lt; &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@expected_band</span>.<span class="ruby-identifier">max</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;legend('top', c('#{label1}','#{label2}'), lty=c(1,1),lwd=c(2.5,2.5),col=c('#{@thread_colours[@control_band.first]}','#{@thread_colours[@expected_band.first]}'))&quot;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:add_lines</span>] <span class="ruby-keyword">and</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:add_lines</span>].<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">Array</span>)
+    <span class="ruby-identifier">opts</span>[<span class="ruby-value">:add_lines</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pos</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;abline(v=#{pos})&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-string">&quot;dev.off()&quot;</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">quit</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- draw_bands-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- draw_bands-method -->
+
+    
+      <div id="method-i-draw_hit_count" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">draw_hit_count</span><span
+            class="method-args">(file="myfile.png",opts=@opts[:graphics])</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Draws a barplot of the number of polymorphisms in each thread/window in a
+single PNG file <code>file</code></p>
+          
+
+          
+          <div class="method-source-code" id="draw_hit_count-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 948</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">draw_hit_count</span>(<span class="ruby-identifier">file</span>=<span class="ruby-string">&quot;myfile.png&quot;</span>,<span class="ruby-identifier">opts</span>=<span class="ruby-ivar">@opts</span>[<span class="ruby-value">:graphics</span>])
+  <span class="ruby-identifier">r</span> = <span class="ruby-identifier">new_r</span>
+  <span class="ruby-identifier">wins</span> = []
+  <span class="ruby-identifier">hits</span> = []
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">threads</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">thread</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">wins</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">thread</span>.<span class="ruby-identifier">first</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">thread</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-identifier">hits</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">0.01</span> <span class="ruby-comment">##pseudovalue gets around the case where a thread has no hits... which messes up barplot in R</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">hits</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">thread</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">length</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">wins</span> = <span class="ruby-identifier">wins</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">hits</span> = <span class="ruby-identifier">hits</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;png('#{file}', width=#{opts[:width]}, height=#{opts[:height]})&quot;</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;barplot(hits, names.arg=c(wins), xlab='window', log='y', ylab='number of hits', main='Number of Polymorphisms #{file}', col=rgb(r=0,g=1,b=1, alpha=0.3), na.rm = TRUE)&quot;</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-string">&quot;dev.off()&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- draw_hit_count-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- draw_hit_count-method -->
+
+    
+      <div id="method-i-draw_peaks" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">draw_peaks</span><span
+            class="method-args">(file="myfile.png",opts=@opts[:graphics])</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Draws the peaks calculated from the signal curve by the R function
+<code>Peaks</code> in Bio::Util::Gngm#calculate_peaks. Adds boxes of width
+<code>:range</code> to each peak and annotates the limits. Options are set
+in the global options hash <code>:peaks</code>. and relate to the Peaks
+function in R</p>
+          
+
+          
+          <div class="method-source-code" id="draw_peaks-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 891</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">draw_peaks</span>(<span class="ruby-identifier">file</span>=<span class="ruby-string">&quot;myfile.png&quot;</span>,<span class="ruby-identifier">opts</span>=<span class="ruby-ivar">@opts</span>[<span class="ruby-value">:graphics</span>])
+  <span class="ruby-identifier">opts_a</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:peaks</span>]
+  <span class="ruby-identifier">opts_a</span>.<span class="ruby-identifier">merge!</span>(<span class="ruby-identifier">opts</span>)
+  <span class="ruby-identifier">opts</span> = <span class="ruby-identifier">opts_a</span> <span class="ruby-comment">##sigh ... </span>
+  <span class="ruby-comment">#opts[:background] = opts[:background].to_s.upcase</span>
+  <span class="ruby-comment">#opts[:markov] = opts[:markov].to_s.upcase  </span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_peaks</span>(<span class="ruby-identifier">opts</span>)
+  <span class="ruby-identifier">r</span> = <span class="ruby-identifier">new_r</span>
+  <span class="ruby-comment">#r.eval &quot;suppressMessages ( library('Peaks') )&quot;</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">signal</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">signal</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">x_vals</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">densities</span>[<span class="ruby-value">0</span>][<span class="ruby-value">1</span>]
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;png('#{file}', width=#{opts[:width]}, height=#{opts[:height]})&quot;</span>
+  <span class="ruby-comment">#r.eval &quot;spec = SpectrumSearch(signal,#{opts[:sigma]},threshold=#{opts[:threshold]},background=#{opts[:background]},iterations=#{opts[:iterations]},markov=#{opts[:markov]},window=#{opts[:window]})&quot;</span>
+  <span class="ruby-comment">#peak_positions = r.pull &quot;spec$pos&quot;</span>
+  <span class="ruby-comment">#y = r.pull &quot;spec$y&quot;</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">y</span> = <span class="ruby-ivar">@peak_y_values</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">pos</span> = <span class="ruby-ivar">@peak_indices</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;plot(x_vals,y, type=\&quot;l\&quot;, xlab='position', ylab='Peaks', main='#{file}' )&quot;</span>
+  <span class="ruby-ivar">@peak_indices</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">peak</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;rect(x_vals[#{peak}]-(#{opts[:range]/2}), 0, x_vals[#{peak}]+#{opts[:range]/2}, max(y), col=rgb(r=0,g=1,b=0, alpha=0.3) )&quot;</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;text(x_vals[#{peak}]-(#{opts[:range]/2}),max(y) + 0.05, floor(x_vals[#{peak}]-(#{opts[:range]/2})) )&quot;</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;text(x_vals[#{peak}]+(#{opts[:range]/2}), max(y) + 0.05, floor(x_vals[#{peak}]+(#{opts[:range]/2})) )&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-string">&quot;dev.off()&quot;</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">quit</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- draw_peaks-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- draw_peaks-method -->
+
+    
+      <div id="method-i-draw_signal" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">draw_signal</span><span
+            class="method-args">(file="myfile.png", opts=@opts[:graphics])</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Draws the contents of the @signal instance variable  in a single PNG file
+<code>file</code></p>
+          
+
+          
+          <div class="method-source-code" id="draw_signal-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 868</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">draw_signal</span>(<span class="ruby-identifier">file</span>=<span class="ruby-string">&quot;myfile.png&quot;</span>, <span class="ruby-identifier">opts</span>=<span class="ruby-ivar">@opts</span>[<span class="ruby-value">:graphics</span>]) <span class="ruby-comment">#data.frame(bubs=data$bubbles_found,conf=data$bubbles_confirmed)</span>
+  <span class="ruby-identifier">r</span> = <span class="ruby-identifier">new_r</span>    
+  <span class="ruby-identifier">x_vals</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">densities</span>[<span class="ruby-value">0</span>][<span class="ruby-value">1</span>]
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;png('#{file}', width=#{opts[:width]}, height=#{opts[:height]})&quot;</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">x_vals</span> = <span class="ruby-identifier">x_vals</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">signal</span> =  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">signal</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;plot(x_vals,signal, type=\&quot;l\&quot;, xlab='position', ylab='ratio of signals (expected / control ~ homo / hetero)', main='#{file}' )&quot;</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-string">&quot;dev.off()&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- draw_signal-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- draw_signal-method -->
+
+    
+      <div id="method-i-draw_threads" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">draw_threads</span><span
+            class="method-args">(file="myfile.png", options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Draws the threads in a single PNG file <code>file</code></p>
+
+<p>Options and defaults</p>
+<ul><li>
+<p><code>:draw_legend =&gt; nil</code> -if a filename is provided a legend
+will be drawn in a second plot</p>
+</li><li>
+<p><code>:width =&gt; 1000</code> -width of the PNG in pixels</p>
+</li><li>
+<p><code>:height =&gt; 500</code> -height of the PNG in pixels</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="draw_threads-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 632</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">draw_threads</span>(<span class="ruby-identifier">file</span>=<span class="ruby-string">&quot;myfile.png&quot;</span>, <span class="ruby-identifier">options</span>={})
+  <span class="ruby-identifier">opts</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:graphics</span>].<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">options</span>)
+  <span class="ruby-comment">#uses R's standard plot functions.. needed because ggplot can die unexpectedly...</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">RuntimeError</span>, <span class="ruby-string">&quot;Can't draw threads until clustering is done&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@clusters</span>
+  <span class="ruby-identifier">r</span> = <span class="ruby-identifier">new_r</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;png('#{file}', width=#{opts[:width]}, height=#{opts[:height]})&quot;</span>
+  <span class="ruby-identifier">plot_open</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">densities</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+   <span class="ruby-identifier">r</span>.<span class="ruby-identifier">curr_win</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">last</span>
+   <span class="ruby-identifier">r</span>.<span class="ruby-identifier">dx</span> = <span class="ruby-identifier">t</span>[<span class="ruby-value">1</span>]
+   <span class="ruby-identifier">r</span>.<span class="ruby-identifier">dy</span> = <span class="ruby-identifier">t</span>[<span class="ruby-value">2</span>]
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">plot_open</span>
+      <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;lines(dx,dy, col=\&quot;#{@thread_colours[t.first]}\&quot;, xlab='position', ylab='density')&quot;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;plot(dx,dy, type=\&quot;l\&quot;, col=\&quot;#{@thread_colours[t.first]}\&quot;,ylim=c(0,#{density_max_y}), main='#{file}',xlab='position', ylab='density')&quot;</span>
+      <span class="ruby-identifier">plot_open</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-string">&quot;dev.off()&quot;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:draw_legend</span>]
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;png('#{opts[:draw_legend]}', width=#{opts[:width]}, height=#{opts[:height]})&quot;</span>
+    <span class="ruby-identifier">colours</span> = <span class="ruby-ivar">@thread_colours</span>.<span class="ruby-identifier">each</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">last</span>}.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;','&quot;</span>)
+    <span class="ruby-identifier">names</span> =  <span class="ruby-ivar">@thread_colours</span>.<span class="ruby-identifier">each</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">first</span>}.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;','&quot;</span>)
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-string">&quot;plot(1,xlab=&quot;</span><span class="ruby-string">&quot;,ylab=&quot;</span><span class="ruby-string">&quot;,axes=FALSE)&quot;</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;legend('top', c('#{names}'), lty=c(1),lwd=c(1),col=c('#{colours}'), ncol=4)&quot;</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-string">&quot;dev.off()&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">quit</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- draw_threads-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- draw_threads-method -->
+
+    
+      <div id="method-i-frequency_histogram" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">frequency_histogram</span><span
+            class="method-args">(file="myfile.png", bin_width=@opts[:histo_bin_width], opts=@opts[:graphics])</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Draws a histogram of polymorphism frequencies across the reference genome
+section defined in Bio::Util::Gngm#initialize with bin width
+<code>bin_width</code> and writes it to a PNG file <code>file</code></p>
+          
+
+          
+          <div class="method-source-code" id="frequency_histogram-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 562</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">frequency_histogram</span>(<span class="ruby-identifier">file</span>=<span class="ruby-string">&quot;myfile.png&quot;</span>, <span class="ruby-identifier">bin_width</span>=<span class="ruby-ivar">@opts</span>[<span class="ruby-value">:histo_bin_width</span>], <span class="ruby-identifier">opts</span>=<span class="ruby-ivar">@opts</span>[<span class="ruby-value">:graphics</span>])
+  <span class="ruby-identifier">posns</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">snp_positions</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">first</span>}
+  <span class="ruby-identifier">r</span> = <span class="ruby-identifier">new_r</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-string">&quot;suppressMessages ( library(ggplot2) )&quot;</span> <span class="ruby-comment">#setup R environment... </span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">posns</span> = <span class="ruby-identifier">posns</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-string">&quot;data = data.frame(position=posns)&quot;</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;png('#{file}', width=#{opts[:width]}, height=#{opts[:height]})&quot;</span>
+  <span class="ruby-identifier">graph_cmd</span> = <span class="ruby-node">&quot;qplot(position,data=data, geom='histogram', binwidth = #{bin_width}, alpha=I(1/3), main='#{file}', color='red')&quot;</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span>(<span class="ruby-identifier">graph_cmd</span>)
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">eval</span> <span class="ruby-string">&quot;dev.off()&quot;</span>
+  <span class="ruby-identifier">r</span>.<span class="ruby-identifier">quit</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- frequency_histogram-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- frequency_histogram-method -->
+
+    
+      <div id="method-i-get_band" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_band</span><span
+            class="method-args">(window=1.0)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>gets an array of windows that cluster with a given window</p>
+          
+
+          
+          <div class="method-source-code" id="get_band-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 848</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_band</span>(<span class="ruby-identifier">window</span>=<span class="ruby-value">1.0</span>)
+  <span class="ruby-comment">##because of the weird step rounding error we need to find the internal name of the window.. so find it from the list from the name the user</span>
+  <span class="ruby-comment">##expects it to be, may give more than one passing window so keep only first one..</span>
+  <span class="ruby-identifier">windows</span> = <span class="ruby-identifier">find_window</span>(<span class="ruby-identifier">window</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">RuntimeError</span>, <span class="ruby-node">&quot;Couldnt find window #{window}, or window has no data to calculate: \n windows are #{self.densities.collect {|d| d.first} }&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">windows</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-comment">##if we have a window that is close enough to the specified window</span>
+  <span class="ruby-identifier">idx</span> = <span class="ruby-identifier">find_index</span>(<span class="ruby-identifier">windows</span>.<span class="ruby-identifier">first</span>)
+  <span class="ruby-comment">#find out which cluster the window is in</span>
+  <span class="ruby-identifier">cluster</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">clusters</span>[<span class="ruby-identifier">idx</span>]
+  <span class="ruby-comment">##get the other windows in the same cluster, ie the band...</span>
+  <span class="ruby-identifier">band</span> = []
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">each_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">clusters</span>[<span class="ruby-identifier">i</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">cluster</span>
+      <span class="ruby-identifier">band</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">densities</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">first</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">band</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_band-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_band-method -->
+
+    
+      <div id="method-i-get_insert_size_frequency" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_insert_size_frequency</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns array of arrays <code>[[window start position, proportion of
+alignments &gt; insert size]]</code>. Does this by taking successive
+windows across reference and collects the proportion of the reads in that
+window that have an insert size &gt; the expected insert size. Proportions
+approaching 1 indicate that the sequenced organism has a deletion in that
+section, proportions approaching 0 indicate an insertion in that section,
+proportions around 0.5 indicate random variation of insert size, IE no
+indel.</p>
+
+<p>Each section should be approximately the size of the insertion you expect
+to find and should increment in as small steps as possible.</p>
+
+<p>Options and defaults:</p>
+<ul><li>
+<p><code>:ref_window_size =&gt; 200</code> width of window in which to
+calculate proportions</p>
+</li><li>
+<p><code>:ref_window_slide =&gt; 50</code> number of bases to move window in
+each step</p>
+</li><li>
+<p><code>:isize =&gt; 150</code> expected insert size</p>
+</li></ul>
+
+<p>Sets the instance variable @snp_positions. Only gets positions the first
+time it is called, in subsequent calls pre-computed positions and
+statistics are returned, so changing parameters has no effect</p>
+          
+
+          
+          <div class="method-source-code" id="get_insert_size_frequency-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 531</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_insert_size_frequency</span>(<span class="ruby-identifier">options</span>={})
+  <span class="ruby-identifier">opts</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:insert_size_opts</span>].<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">options</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@snp_positions</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@snp_positions</span>
+  <span class="ruby-keyword">case</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">Bio</span><span class="ruby-operator">::</span><span class="ruby-constant">DB</span><span class="ruby-operator">::</span><span class="ruby-constant">Sam</span>) <span class="ruby-keyword">then</span> <span class="ruby-identifier">get_insert_size_frequency_from_bam</span>(<span class="ruby-identifier">opts</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_insert_size_frequency-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_insert_size_frequency-method -->
+
+    
+      <div id="method-i-get_unmapped_mate_frequency" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_unmapped_mate_frequency</span><span
+            class="method-args">(options={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns array of arrays <code>[[window start position, proportion of reads
+with unmapped mates]]</code>. Does this by taking successive windows across
+reference and counting the reads with unmapped mates Proportions
+approaching 0.5 indicate that the sequenced organism has an insertion in
+that section, proportions approaching 0 indicate nothing different in that
+section.</p>
+
+<p>Each section should be approximately the size of the insertion you expect
+to find and should increment in as small steps as possible.</p>
+
+<p>Options and defaults:</p>
+<ul><li>
+<p><code>:ref_window_size =&gt; 200</code> width of window in which to
+calculate proportions</p>
+</li><li>
+<p><code>:ref_window_slide =&gt; 50</code> number of bases to move window in
+each step</p>
+</li></ul>
+
+<p>Sets the instance variable @snp_positions. Only gets positions the first
+time it is called, in subsequent calls pre-computed positions and
+statistics are returned, so changing parameters has no effect</p>
+          
+
+          
+          <div class="method-source-code" id="get_unmapped_mate_frequency-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 550</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_unmapped_mate_frequency</span>(<span class="ruby-identifier">options</span>={})
+  <span class="ruby-identifier">opts</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:insert_size_opts</span>].<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">options</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@snp_positions</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@snp_positions</span>
+  <span class="ruby-keyword">case</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">Bio</span><span class="ruby-operator">::</span><span class="ruby-constant">DB</span><span class="ruby-operator">::</span><span class="ruby-constant">Sam</span>) <span class="ruby-keyword">then</span> <span class="ruby-identifier">get_unmapped_mate_frequency_from_bam</span>(<span class="ruby-identifier">opts</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_unmapped_mate_frequency-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_unmapped_mate_frequency-method -->
+
+    
+      <div id="method-i-hit_count" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">hit_count</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns an array of polymorphisms in each thread/window &lt;tt&gt;[[window,
+polymorphism count] ]. Useful for sparse polymorphism counts or over small
+regions where small polymorphism counts can cause artificially large peaks
+in density curves.</p>
+          
+
+          
+          <div class="method-source-code" id="hit_count-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 938</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">hit_count</span>
+  <span class="ruby-identifier">arr</span> = []
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">threads</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">thread</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">arr</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">thread</span>.<span class="ruby-identifier">first</span>, <span class="ruby-identifier">thread</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">length</span>]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">arr</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- hit_count-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- hit_count-method -->
+
+    
+      <div id="method-i-peaks" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">peaks</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the positions of the peaks in the signal curve calculated by
+Bio::Util::Gngm#get_peaks as an array</p>
+          
+
+          
+          <div class="method-source-code" id="peaks-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 884</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">peaks</span>
+  <span class="ruby-ivar">@peak_indices</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">densities</span>[<span class="ruby-value">0</span>][<span class="ruby-value">1</span>][<span class="ruby-identifier">x</span>].<span class="ruby-identifier">to_f</span>.<span class="ruby-identifier">floor</span>} 
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- peaks-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- peaks-method -->
+
+    
+      <div id="method-i-signal" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">signal</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="signal-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 999</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">signal</span>
+  <span class="ruby-ivar">@signal</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">calculate_signal</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- signal-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- signal-method -->
+
+    
+      <div id="method-i-snp_positions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">snp_positions</span><span
+            class="method-args">(optsa={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns array of arrays <code>[[position, statistic]]</code> for
+polymorphisms passing filters in <code>optsa</code> Default options are
+those in the <code>:variant_call</code> global options hash which can be
+over ridden in the method call</p>
+
+<p>Options and defaults:</p>
+<ul><li>
+<p><code>:indels =&gt; false</code> -call small insertions AND deletions
+instead of simple SNPs</p>
+</li><li>
+<p><code>:deletions_only =&gt; false</code> -call just deletions instead of
+simple SNPs</p>
+</li><li>
+<p><code>:insertions_only =&gt; false</code> -call small insertions instead of
+simple SNPs</p>
+</li><li>
+<p><code>:min_depth =&gt; 2</code> -minimum quality passing depth of coverage
+at a position for a SNP call</p>
+</li><li>
+<p><code>:max_depth =&gt; 10000000</code> -maximum quality passing depth of
+coverage at a position for a SNP call</p>
+</li><li>
+<p><code>:mapping_quality =&gt; 10.0</code> -minimum mapping quality required
+for a read to be used in depth calculation</p>
+</li><li>
+<p><code>:min_non_ref_count =&gt; 2</code> -minimum number of reads not
+matching the reference for SNP to be called</p>
+</li><li>
+<p><code>:ignore_reference_n =&gt; true</code> -ignore positions where the
+reference is N or n</p>
+</li></ul>
+
+<p>When INDEL calling only one of <code>:indels, :deletions_only,
+:insertions_only</code> should be used. If all are <code>false</code>, SNPs
+are called.</p>
+
+<p>Sets the instance variable @snp_positions. Only gets positions the first
+time it is called, in subsequent calls pre-computed positions and
+statistics are returned, so changing parameters has no effect.</p>
+          
+
+          
+          <div class="method-source-code" id="snp_positions-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 422</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">snp_positions</span>(<span class="ruby-identifier">optsa</span>={})
+  <span class="ruby-identifier">opts</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:variant_call</span>].<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">optsa</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@snp_positions</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@snp_positions</span>
+  <span class="ruby-keyword">case</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">Bio</span><span class="ruby-operator">::</span><span class="ruby-constant">DB</span><span class="ruby-operator">::</span><span class="ruby-constant">Sam</span>) <span class="ruby-keyword">then</span> <span class="ruby-identifier">get_snp_positions_from_bam</span>(<span class="ruby-identifier">opts</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- snp_positions-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- snp_positions-method -->
+
+    
+      <div id="method-i-threads" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">threads</span><span
+            class="method-args">(opts=@opts[:threads])</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns contents of @threads, an array of arrays <code>[[window 1, snp
+position 1, snp position 2 ... snp position n],[window 2, snp position 1,
+snp position 2 ... snp position n] ]</code>.  If @threads is nil (because
+snps have not yet been gathered into threads) the <a
+href="Gngm.html#method-i-collect_threads">#collect_threads</a> method is
+called and @threads is set before returning</p>
+
+<p>Options and defaults:</p>
+<ul><li>
+<p><code>:start =&gt; 0.2</code> -first window</p>
+</li><li>
+<p><code>:stop =&gt; 1.0</code> -last window</p>
+</li><li>
+<p><code>:slide =&gt; 0.01</code> -distance between windows</p>
+</li><li>
+<p><code>:size =&gt; 0.1</code> -window width</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="threads-source">
+            <pre><span class="ruby-comment"># File lib/bio/util/bio-gngm.rb, line 584</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">threads</span>(<span class="ruby-identifier">opts</span>=<span class="ruby-ivar">@opts</span>[<span class="ruby-value">:threads</span>]) 
+  <span class="ruby-ivar">@threads</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">collect_threads</span>(<span class="ruby-identifier">opts</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- threads-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- threads-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.11.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
