@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
+    "bio-gngm.gemspec",
     "doc/Bio.html",
     "doc/Bio/DB.html",
     "doc/Bio/DB/Pileup.html",
