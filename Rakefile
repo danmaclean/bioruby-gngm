@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "bio-gngm"
   gem.homepage = "http://github.com/danmaclean/bioruby-gngm"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Next-Generation Mapping of Mutations}
+  gem.description = %Q{Identify causative mutations in a model genome from NGS reads using the NGM method.}
   gem.email = "maclean.daniel@gmail.com"
   gem.authors = ["Dan MacLean"]
   # dependencies defined in Gemfile

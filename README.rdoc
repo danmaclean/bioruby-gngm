@@ -1,6 +1,20 @@
 = bio-gngm
 
-Description goes here.
+Ruby Gem for performing identification of causative mutations in a model genome using the NGM method.
+
+A Bio::Util::Gngm object represents a single region on a reference genome that is to be examined using the NGM technique described in Austin et al (2011) http://bar.utoronto.ca/ngm/description.html and http://onlinelibrary.wiley.com/doi/10.1111/j.1365-313X.2011.04619.x/abstract;jsessionid=F73E2DA628523B26205297CEE95526DA.d02t04
+Austin _et_ _al_ (2011) *Next-generation* *mapping* *of* *Arabidopsis* *genes* _Plant_ _Journal_ *67*(4):7125-725 . 
+
+Bio::Util::Gngm provides methods for finding SNPs, small INDELS and larger INDELS, creating histograms of polymorphism frequency, 
+creating and clustering density curves, creating signal plots and finding peaks. The ratio of reference-agreeing and reference-differing reads can be specified. 
+
+== Background
+The basic concept of the technique is that density curves of polymorphism frequency across the region of interest are plotted and analysed. Each curve is called a thread, as it represents a polymorphism that
+was called with a statistic within a certain user-specified range, eg if a SNP was called with 50% non-reference bases from sequence reads (say all A), and 50% reference reads (all T) then a discordant
+chastity statistic (ChD) of 0.5 would be calculated and assigned to that SNP. Depending on the width and slide of the windows the user had specified, the frequency of SNPs with ChD in the specified range
+would be drawn in the same density curve. 
+
+Finding regions enriched in a target ChD and depleted in others can point to causative mutations.
 
 == Contributing to bio-gngm
  
