@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "bio-gngm"
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan MacLean"]
-  s.date = "2012-03-19"
+  s.date = "2012-11-15"
   s.description = "Identify causative mutations in a model genome from NGS reads using the NGM method."
   s.email = "maclean.daniel@gmail.com"
   s.extra_rdoc_files = [
@@ -89,6 +89,7 @@ Gem::Specification.new do |s|
     "examples/use_indels.rb",
     "lib/bio-gngm.rb",
     "lib/bio/util/bio-gngm.rb",
+    "lib/bio/util/mutation_effects.rb",
     "scripts/get_subseq.rb",
     "scripts/make_histograms_laerfyve.rb",
     "scripts/make_histograms_laerfyve_stitched.rb",
