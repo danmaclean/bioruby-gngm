@@ -5,12 +5,35 @@
 #  Created by Dan MacLean (TSL) on 2011-12-07.
 #  Copyright (c)  . All rights reserved.
 ###################################################
-
+require 'rubygems'
 require 'rinruby'
 require 'bio-samtools'
 require 'bio/db/pileup'
 require 'bio/db/vcf'
 require 'pp'
+
+=begin
+Simple class representing a file of Fasta format sequences and each ones length
+=end
+class Bio::DB::FastaLengthDB
+  require 'bio'
+  def initialize(args)
+    @file = args[:file]
+    @seqs = {}
+    file = Bio::FastaFormat.open(@file)
+    file.each do |entry|
+      @seqs[entry.entry_id] = entry.length
+    end
+    
+    def each
+      @seqs.keys.sort.each do |k|
+        yield k, @seqs[k]
+      end
+    end
+    
+  end
+end
+
 
 =begin
 Extends the methods of the Bio::DB::Pileup class in bio-samtools. A pileup object represents the SAMtools pileup format at 
@@ -53,11 +76,10 @@ class Bio::DB::Pileup
   # pileup.is_snp?(:min_depth => 5, :min_non_ref_count => 2)
   # pileup.is_snp?(:min_depth => 5, :min_non_ref_count => 1, :ignore_reference_n => true)
   def is_snp?(opts)  
-    if opts[:ignore_reference_n] and self.ref_base == "N" or self.ref_base == "n"
-      return false
-    elsif self.coverage >= opts[:min_depth] and self.non_ref_count >= opts[:min_non_ref_count]
-      return true
-    end
+    return false if self.ref_base == '*'
+    #return false unless is_ct
+    return false if opts[:ignore_reference_n] and self.ref_base == "N" or self.ref_base == "n"
+    return true if self.coverage >= opts[:min_depth] and self.non_ref_count >= opts[:min_non_ref_count]
     false
   end
 end
@@ -131,9 +153,9 @@ class Bio::DB::Vcf
   end
   
   #Returns true if only one variant allele is recorded. Loci with more than one allele are too complicated for now, so are discarded...
-  def has_just_one_variant?
-    self.alternatives.length == 1 and self.variant?
-  end
+  #def has_just_one_variant?
+  #  self.alternatives.length == 1 and self.variant?
+  #end
   
   #Returns true if the position passes criteria
   # 
@@ -143,38 +165,27 @@ class Bio::DB::Vcf
   #- :mapping_quality => 10
   #
   #Example
-  # vcf.pass_quality?(:min_depth => 5, :min_non_ref_count => 2, :mapping_quality => 25)  
+  # vcf.pass_quality?(:min_depth => 5, :min_non_ref_count => 2, :mapping_quality => 25, :min_snp_quality => 20)  
   def pass_quality?(options)
-    (self.used_depth >= options[:min_depth] and self.mq >= options[:mapping_quality] and self.non_ref_allele_count >= options[:min_non_ref_count])
+    (self.used_depth >= options[:min_depth] and self.mq >= options[:mapping_quality] and self.non_ref_allele_count >= options[:min_non_ref_count] and self.qual >= options[:min_snp_quality])
   end
   
-  #Returns true if the length of the alt column is less than that of the ref column in the Vcf and if Vcf.pass_quality? is true.
-  #Looks only at the positions that are predicted simple deletions, any positions where the alt alleles includes more than one deletion or a SNP or an insertion also is ignored.
-  def is_deletion?(options)
-    case
-    when (not self.has_just_one_variant?) then false
-    when  ( self.alt.length < self.ref.length  and self.pass_quality?(options) )  then true
-    else false
-    end
-  rescue ## if something goes wrong, skip the postion, 
+  #returns true if ref col has same length as all alternatives and position variant passes quality
+  def is_mnp?(options)
+    return true if self.alternatives.all? {|x| x.length == self.ref.length} and self.pass_quality?(options)
     false
   end
   
-  #Returns true if the length of the alt column is greater than that of the ref column in the Vcf and if Vcf.pass_quality? is true.
-  #Looks only at the positions that are predicted simple deletions, any positions where the alt alleles includes more than one deletion or a SNP or an insertion also is ignored.
-  def is_insertion?(options)
-      case
-      when (not self.has_just_one_variant?) then false
-      when ( self.alt.length > self.ref.length and self.pass_quality?(options)  ) then true 
-      else false
-      end
-    rescue ## if something goes wrong, skip the postion, 
-      false
+  ##returns true if ref col has length of 1 and is_mnp?
+  def is_snp?(options)
+    return true if self.is_mnp?(options) and self.ref.length == 1
+    false
   end
   
-  #Returns true if either Vcf.is_insertion? or Vcf.is_deletion? is true
-  def is_indel?(opts)
-    self.is_insertion?(opts) || self.is_deletion?(opts)
+  #Returns true if ref col is different in length from any of the entries in alt column
+  def is_indel?(options)
+    return true if self.variant? and self.alternatives.any? {|x| x.length != self.ref.length} and self.pass_quality?(options)
+    false
   end
   
 
@@ -321,19 +332,33 @@ class Gngm
   #
   # g = Bio::Util::Gngm.new(:file => "aln.sort.bam", 
   #             :format => :bam,
-  #             :samtools => {:q => 20, :Q => 50, :r => "Chr1:1-100000"}, 
+  #             :samtools => {:q => 20, :Q => 50}, 
   #             :fasta => "reference.fa"
-  #
+  #             :start => 100,
+  #             :stop => 200
   #  )
   #
   #Required parameters and defaults:
   #- <tt>:file => nil</tt> -the path to the bam file containing the alignments, a .bai index must be present
-  #- <tt>:format => :bam</tt> -always bam
+  #- <tt>:format => :bam</tt> -either :bam, :emap, :pileup (pileup expected to be 10 col format from samtools -vcf)
+  #- <tt>:chromosome => "nil"</tt> -sequence id to look at
+  #- <tt>:start => nil</tt> -start position on that sequence
+  #- <tt>:stop => nil</tt> -stop position on that sequence
   #- <tt>:fasta => nil</tt> -the path to the FASTA formatted reference sequence
-  #- <tt>:samtools => {:q => 20, :Q => 50, :r => "Chr1:100-1100"}</tt> -options for samtools, see bio-samtools documentation for further details. The :r option is required to specify the region of interest 
+  #- <tt>:samtools => {:q => 20, :Q => 50}</tt> -options for samtools, see bio-samtools documentation for further details. The :r option is required to specify the region of interest 
   #Optional parameters and defaults:
+  
   #Most of these are parameters for specific methods and can be over-ridden when particular methods are called
-  #- <tt>:variant_call => {:indels => false, :deletions_only => false, :insertions_only => false, :min_depth => 2, :max_depth => 10000000, :mapping_quality => 10.0, :min_non_ref_count => 2, :ignore_reference_n => true}</tt> -for SNP/Indel calling only one of <tt>:indels, :deletions_only, :insertions_only</tt> should be used.
+  #- <tt>:variant_call => {:indels => false,
+  #                         :min_depth => 2, 
+  #                         :max_depth => 10000000, 
+  #                         :min_snp_quality => 20, 
+  #                         :mapping_quality => 10.0, 
+  #                         :min_non_ref_count => 2, 
+  #                         :ignore_reference_n => true, 
+  #                         :min_consensus_quality => 20, 
+  #                         :min_snp_quality => 20 }</tt>. 
+  #                         For Pileup files from old samtools pileup -vcf <tt>:min_consensus_quality</tt> can be applied
   #- <tt>:threads => {:start => 0.2, :stop => 1.0, :slide => 0.01, :size => 0.1 }</tt> -options for thread windows
   #- <tt>:insert_size_opts => {:ref_window_size => 200, :ref_window_slide => 50, :isize => 150}</tt> -options for insert size calculations
   #- <tt>:histo_bin_width => 250000</tt> -bin width for histograms of SNP frequency
@@ -353,20 +378,30 @@ class Gngm
     @density_max_y = nil #the maximum y value needed to plot the entire set density plots of threads and maintain a consistent scale for plots
     @colours = %w[#A6CEE3 #1F78B4 #B2DF8A #33A02C #FB9A99 #E31A1C #FDBF6F #FF7F00 #CAB2D6 #6A3D9A #FFFF99 #B15928]
     @thread_colours = {}
+    @known_variants = nil #a list of variants to keep track of
     @opts = {
       :file => nil,
       :format => :bam,
       :fasta => nil,
       :samtools => {:q => 20, :Q => 50},
-      ##indels = call any and only indels.. :deletions_only :insertions_only = only one tyoe
+      :indels => false,
+      ##:indels = call indels too, causes return of vcf
+      :insert_size_opts => {:ref_window_size => 200, :ref_window_slide => 50, :isize => 150},
+      :variant_call => { :min_depth => 2, 
+                         :max_depth => 10000000, 
+                         :mapping_quality => 10.0, 
+                         :min_non_ref_count => 2, 
+                         :ignore_reference_n => true, 
+                         :shore_map => false, 
+                         :snp_file => :false, 
+                         :min_consensus_quality => 20, 
+                         :min_snp_quality => 20},
       ## some options are designed to be equivalent to vcfutils.pl from bvftools options when using vcf
       ##:min_depth (-d)
       ##:max_depth (-D)
       ##:mapping_quality (-Q) minimum RMS mappinq quality for SNPs (mq in info fields)
       ##:min_non_ref_count (-a) minimum num of alt bases ... the sum of the last two numbers in DP4 in info fields
       ##doesnt do anything with window filtering or pv values... 
-      :insert_size_opts => {:ref_window_size => 200, :ref_window_slide => 50, :isize => 150},
-      :variant_call => {:indels => false, :deletions_only => false, :insertions_only => false, :min_depth => 2, :max_depth => 10000000, :mapping_quality => 10.0, :min_non_ref_count => 2, :ignore_reference_n => true},
       :histo_bin_width => 250000,
       :graphics => {:width => 1000, :height => 500, :draw_legend => false, :add_boxes => nil},
       :adjust => 1, 
@@ -376,6 +411,7 @@ class Gngm
       :peaks => {:sigma => 3.0, :threshold => 10.0, :background => false, :iterations => 13, :markov => false, :window => 3, :range => 10000} ##range is the width of the box to draw on the peak plot
     }
     @opts.merge!(options)
+    @opts[:samtools][:r] = "#{options[:chromosome]}:#{options[:start]}-#{options[:stop]}"
     open_file
   end
   
@@ -384,6 +420,7 @@ class Gngm
   def open_file
     case @opts[:format]
     when :bam then open_bam
+    when :pileup, :text then open_text
     end
   end
   
@@ -392,6 +429,10 @@ class Gngm
   def open_bam
     @file = Bio::DB::Sam.new(:bam => @opts[:file], :fasta => @opts[:fasta] )
     @file.open
+  end
+  
+  def open_text
+    @file = File.open(@opts[:file], "r")
   end
   
   public
@@ -415,16 +456,31 @@ class Gngm
   #- <tt>:mapping_quality => 10.0</tt> -minimum mapping quality required for a read to be used in depth calculation
   #- <tt>:min_non_ref_count => 2</tt> -minimum number of reads not matching the reference for SNP to be called
   #- <tt>:ignore_reference_n => true</tt> -ignore positions where the reference is N or n
-  # 
+  #- <tt>:shore_map => false</tt> -use SHOREmap INTERVAL calculations as described in Anderson et al., 2009, Nature Methods 6. 8. Requires a file of known SNPs between the mapping line (eg Ler in Andersen et al.,) and a reference line (eg Col in Andersen et al).  
+  #- <tt>:snp_file => -file of known SNPs in format "reference sequence id \t position \t mapping line nucleotide identity \t reference line nucleotide identity". Only used when +:shore_map+ is set to true. Only SNPs listed in this file will be considered.
   #When INDEL calling only one of <tt>:indels, :deletions_only, :insertions_only</tt> should be used. If all are +false+, SNPs are called.
   #
-  #Sets the instance variable @snp_positions. Only gets positions the first time it is called, in subsequent calls pre-computed positions and statistics are returned, so changing parameters has no effect.
+  #calculates or returns the value of the instance variable @snp_positions. Only gets positions the first time it is called, in subsequent calls pre-computed positions and statistics are returned, so changing parameters has no effect.
   def snp_positions(optsa={})
     opts = @opts[:variant_call].merge(optsa)
     return @snp_positions if @snp_positions
-    case
-    when @file.instance_of?(Bio::DB::Sam) then get_snp_positions_from_bam(opts)
+    case @opts[:format]
+    when :bam then get_snp_positions_from_bam(opts)
+    when :text then get_snp_positions_from_text(opts)
+    when :pileup then get_snp_positions_from_pileup(opts)
     end
+  end
+  
+  ##allows the user to assign SNP positions
+  def snp_positions=(arr)
+    @snp_positions = arr
+  end
+  
+  def is_allowed_substitution?(ref,alt,opts)
+    if opts[:substitutions].instance_of?(Array)
+      return false unless opts[:substitutions].include?("#{ref}:#{alt}")
+    end
+    true
   end
   
   private
@@ -432,18 +488,14 @@ class Gngm
   #Sets @snp_positions
   def get_snp_positions_from_bam(options={})
     opts = @opts[:variant_call].merge(options)
-    if opts[:indels] and (opts[:deletions_only] or opts[:insertions_only])
-      raise "Cant have indels and deletions only or insertions only, need to specify ':indels => true' to get both"
-    end
     arr = []
-    ##when we are calling mpileup_plus we need to add :g to the samtools options
-    if opts[:indels] or opts[:deletions_only] or opts[:insertions_only]
-      @opts[:samtools][:g] = true
-    end
+    ##when we are calling mpileup_plus we need to add :g to the samtools options #alw
+    @opts[:samtools][:g] = true if opts[:indels]
+
     
     if not @opts[:samtools][:g]
       @file.mpileup(@opts[:samtools]) do |pileup|
-        arr << [pileup.pos, pileup.discordant_chastity] if pileup.is_snp?(opts)
+        arr << [pileup.pos, pileup.discordant_chastity] if pileup.is_snp?(opts) and is_allowed_substitution?(pileup.ref_base, pileup.consensus,opts)
       end
     else
       @file.mpileup_plus(@opts[:samtools]) do |vcf|
@@ -451,17 +503,54 @@ class Gngm
         next if (opts[:ignore_reference_n] and vcf.ref =~ /N/i)
         ##indel use returns the vcf allele_frequency, not the ChDs (because calculating it is a mess... )
         if opts[:indels]
-          arr << [vcf.pos, vcf.non_ref_allele_freq] if vcf.is_indel?(opts)
-        elsif opts[:deletions_only]
-          arr << [vcf.pos, vcf.non_ref_allele_freq] if vcf.is_deletion?(opts)
-        elsif opts[:insertions_only]
-          arr << [vcf.pos, vcf.non_ref_allele_freq] if vcf.is_insertion?(opts)
+          arr << [vcf.pos, vcf.non_ref_allele_freq] if vcf.is_indel?(opts) and is_allowed_substitution?(vcf.ref, vcf.alt,opts)
+        else
+          arr << [vcf.pos, vcf.non_ref_allele_freq] if vcf.is_snp?(opts) and is_allowed_substitution?(vcf.ref, vcf.alt,opts)
         end
       end
     end
     
     @snp_positions = arr
+
     arr
+  end
+  
+  private
+  def get_snp_positions_from_map(options={})
+    arr = []
+    opts = @opts[:variant_call].merge(options)
+  end
+  
+  #this does not filter snps, other than to check they are in the right region and are allowed substitutions.. no qual control, assumed to be done prior
+  #text file is of format chr\tpos\tref\talt\tfreq\n
+  def get_snp_positions_from_text(options={})
+    arr = []
+    opts = @opts[:variant_call].merge(options)
+    @file.each do |line|
+        chr,pos,ref,alt,freq = line.chomp.split("\t")
+        pos = pos.to_i
+        freq = freq.to_f
+        next unless chr == @opts[:chromosome] and pos >= @opts[:start] and pos <= @opts[:stop] and is_allowed_substitution?(ref,alt,opts)
+        arr << [pos, freq]
+    end
+    @snp_positions = arr
+  end
+  
+  private 
+  def get_snp_positions_from_pileup(options={})
+    arr = []
+    opts = @opts[:variant_call].merge(options)
+    @file.each do |line|
+      pileup = Bio::DB::Pileup.new(line)
+     if pileup.ref_name != @opts[:chromosome] or pileup.pos < @opts[:start] or pileup.pos > @opts[:stop]
+       next
+     end 
+      #old fashioned 10 col pileup format has extra fields we can use if needed
+     if pileup.is_snp?(opts) and not pileup.consensus_quality.nil? and not pileup.snp_quality.nil?
+       arr << [pileup.pos, pileup.discordant_chastity] if pileup.consensus_quality > opts[:min_consensus_quality] and pileup.snp_quality > opts[:min_snp_quality] and is_allowed_substitution?(pileup.ref_base, pileup.consensus,opts)
+     end
+    end
+    @snp_positions = arr
   end
   
   private
@@ -815,7 +904,7 @@ class Gngm
     @peak_indices = nil #needs resetting as we are working with new cluster
     @peak_y_values = nil #needs resetting as we are working with new cluster
     self.calculate_densities(options[:adjust])
-    @clusters = Array.new (@densities.length) {|x| 1 + x}
+    @clusters = Array.new(@densities.length) {|x| 1 + x}
     ##now set the cluster colours.. 
     colours = %w[#A6CEE3 #1F78B4 #B2DF8A #33A02C #FB9A99 #E31A1C #FDBF6F #FF7F00 #CAB2D6 #6A3D9A #FFFF99 #B15928]
     ci = 0
@@ -916,7 +1005,7 @@ class Gngm
     r.quit
   end
   
-  private
+  #private
   #Calculates the position of peaks in the signal curve
   def get_peaks(opts=@opts[:peaks])
     opts[:background] = opts[:background].to_s.upcase
@@ -1023,7 +1112,29 @@ class Gngm
     return r
   end
   
+  private
+  #returns an array of arrays of known variants
+  #file:
+  #chr1	500	A	G
+  #chr2	1000	ATGTTA
+  #chr3	1500	.	TTGGA 
+  # returns [["chr1", "500", "A", "G"], ["chr2", "1000", "ATG", "TTA"], ["chr3", "1500", ".", "TTGGA"]]
+  def parse_known_variants(file)
+    File.open(file, "r").readlines.collect {|x| x.chomp.split("\t")}
+  end
 
+  public
+  #Deletes everything from self.snp_positions not mentioned by position in self.known_variants. Directly modifies self.snp_positions
+  def keep_known_variants(file=nil)
+    raise "file of known variants not provided and @known_variants is nil" if @known_variants.nil? and file.nil?
+    @known_variants = parse_known_variants(file) if @known_variants.nil? and file
+    @snp_positions.each do |snp|
+    end
+  end
+  
 end
 end
 end
+
+
+
