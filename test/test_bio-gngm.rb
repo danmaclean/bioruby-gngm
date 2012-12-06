@@ -46,7 +46,7 @@ class TestBioGngm < Test::Unit::TestCase
                      :format => :bam, 
                      :fasta => "/Users/macleand/Desktop/ngm/TAIR9_chr_all.fas", 
                      :samtools => {:r => "1:100-10000"},
-                     :histo_bin_width => 100,
+                     :histo_bin_width => 100
 
       )
     end

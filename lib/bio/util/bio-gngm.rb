@@ -227,14 +227,36 @@ link:images/signal.png
 
   g = Bio::Util::Gngm.new(:file => "aln.sorted.bam", 
                :format => :bam, 
-               :fasta => "reference.fasta", 
-               :samtools => {:r => "chr1:1-100000",
+               :fasta => "reference.fasta",
+               :start => 100,
+               :stop => 200,
+               :write_pileup => "my_pileup_file.pileup",
+               :write_vcf => "my_vcf_file.vcf",
+               :ignore_file => "my_known_snps.txt" 
+               :samtools => {
                              :q => 20,
                              :Q => 50
                },
                :min_non_ref_freq => 0.5,
-               :min_non_ref => 3
+               :min_non_ref => 3,
+               :start => 1,
+               :stop => 100000,
+               :chromosome => "Chr1",
+               :variant_call => {
+                 :indels => false,  
+                 :min_depth => 6, 
+                 :max_depth => 250, 
+                 :mapping_quality => 20.0, 
+                 :min_non_ref_count => 2, 
+                 :ignore_reference_n => true,
+                 :min_snp_quality => 20,
+                 :min_consensus_quality => 20,
+                 :substitutions => ["C:T","G:A"] 
+                 }
+               
+               
     )
+    
     g.snp_positions
     g.collect_threads(:start => 0.2, :stop => 1.0, :slide => 0.01, :size => 0.1 )
     [0.25, 0.5, 1.0].each do |kernel_adjust| # loop through different kernel values
@@ -311,10 +333,7 @@ The following R packages are required
 Thanks very much indeed to Ryan Austin, who invented NGM in the first place and was very forthcoming with R code, around which this implementation is based.
 
 == Using bio-gngm
-The package is not yet released, a gem will be prepared soon. Until then scripts run fine when saved in the package scripts from within the package directory  with the below pre-amble at the top of the script. Run scripts from the root of the package directory.
-  $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-  $LOAD_PATH.unshift(File.dirname(__FILE__))
-  require 'bio-samtools'
+
   require 'bio-gngm'
   
 == API
@@ -335,30 +354,37 @@ class Gngm
   #             :samtools => {:q => 20, :Q => 50}, 
   #             :fasta => "reference.fa"
   #             :start => 100,
-  #             :stop => 200
+  #             :stop => 200,
+  #             :write_pileup => "my_pileup_file.pileup",
+  #             :write_vcf => "my_vcf_file.vcf",
+  #             :ignore_file => "my_known_snps.txt"
+  #
   #  )
   #
   #Required parameters and defaults:
-  #- <tt>:file => nil</tt> -the path to the bam file containing the alignments, a .bai index must be present
-  #- <tt>:format => :bam</tt> -either :bam, :emap, :pileup (pileup expected to be 10 col format from samtools -vcf)
+  #- <tt>:file => nil</tt> -the path to the bam file containing the alignments, a .bai index must be present. A pileup file, or tab-delimited text file can be used.
+  #- <tt>:format => :bam</tt> -either :bam, :pileup, :txt (pileup expected to be 10 col format from samtools -vcf)
   #- <tt>:chromosome => "nil"</tt> -sequence id to look at
   #- <tt>:start => nil</tt> -start position on that sequence
   #- <tt>:stop => nil</tt> -stop position on that sequence
   #- <tt>:fasta => nil</tt> -the path to the FASTA formatted reference sequence
-  #- <tt>:samtools => {:q => 20, :Q => 50}</tt> -options for samtools, see bio-samtools documentation for further details. The :r option is required to specify the region of interest 
+  #- <tt>:write_pileup => false</tt> -the path to a file. SNPs will be written in pileup to this file (indels not output)
+  #- <tt>:write_vcf => false</tt> -the path to a file. SNPs will be written in VCF to this file (indels not output)
+  #- <tt>:ignore_file => false</tt> -file of SNPs in format "reference sequence id \t position \t mapping line nucleotide identity \t reference line nucleotide identity". All SNPs in this file will be ignored
+  #- <tt>:samtools => {:q => 20, :Q => 50}</tt> -options for samtools, see bio-samtools documentation for further details.
   #Optional parameters and defaults:
-  
+  #
   #Most of these are parameters for specific methods and can be over-ridden when particular methods are called
-  #- <tt>:variant_call => {:indels => false,
-  #                         :min_depth => 2, 
-  #                         :max_depth => 10000000, 
-  #                         :min_snp_quality => 20, 
-  #                         :mapping_quality => 10.0, 
-  #                         :min_non_ref_count => 2, 
-  #                         :ignore_reference_n => true, 
-  #                         :min_consensus_quality => 20, 
-  #                         :min_snp_quality => 20 }</tt>. 
-  #                         For Pileup files from old samtools pileup -vcf <tt>:min_consensus_quality</tt> can be applied
+  #- <tt>:variant_call => {:indels => false,</tt>
+  #- <tt>                  :min_depth => 2, </tt>
+  #- <tt>                  :max_depth => 10000000, </tt>
+  #- <tt>                  :min_snp_quality => 20, </tt>
+  #- <tt>                  :mapping_quality => 10.0, </tt>
+  #- <tt>                  :min_non_ref_count => 2, </tt>
+  #- <tt>                  :ignore_reference_n => true, </tt>
+  #- <tt>                  :min_consensus_quality => 20, </tt>
+  #- <tt>                  :min_snp_quality => 20 }</tt>. 
+  # - <tt>                For Pileup files from old samtools pileup -vcf <tt>:min_consensus_quality</tt> can be applied
   #- <tt>:threads => {:start => 0.2, :stop => 1.0, :slide => 0.01, :size => 0.1 }</tt> -options for thread windows
   #- <tt>:insert_size_opts => {:ref_window_size => 200, :ref_window_slide => 50, :isize => 150}</tt> -options for insert size calculations
   #- <tt>:histo_bin_width => 250000</tt> -bin width for histograms of SNP frequency
@@ -385,9 +411,12 @@ class Gngm
       :fasta => nil,
       :samtools => {:q => 20, :Q => 50},
       :indels => false,
-      ##:indels = call indels too, causes return of vcf
+      :write_pileup => false,
+      :write_vcf => false,
+      :ignore_file => false,
       :insert_size_opts => {:ref_window_size => 200, :ref_window_slide => 50, :isize => 150},
-      :variant_call => { :min_depth => 2, 
+      :variant_call => { :indels => false,
+                         :min_depth => 2, 
                          :max_depth => 10000000, 
                          :mapping_quality => 10.0, 
                          :min_non_ref_count => 2, 
@@ -412,6 +441,31 @@ class Gngm
     }
     @opts.merge!(options)
     @opts[:samtools][:r] = "#{options[:chromosome]}:#{options[:start]}-#{options[:stop]}"
+    @pileup_outfile, @vcf_outfile = nil,nil
+    if @opts[:variant_call][:indels] and (@opts[:write_pileup] or @opts[:write_vcf])
+      $stderr.puts "Cannot yet output VCF/Pileup when generating INDELs. Turning output off."
+      @opts[:write_pileup] = false
+      @opts[:write_vcf] = false
+    end
+    if @opts[:write_pileup]
+      @pileup_outfile = File.open(@opts[:write_pileup], "w")
+    end
+    if @opts[:write_vcf]
+      @vcf_outfile = File.open(@opts[:write_vcf], "w")
+    end
+    
+    @known_snps = Hash.new
+    if @opts[:ignore_file]
+      File.open(@opts[:ignore_file], "r").each do |line|
+        col = line.chomp.split(/\t/)
+        if @known_snps[col[0]]
+          @known_snps[col[0]][col[1].to_i] = 1
+        else
+          @known_snps[col[0]] = Hash.new
+          @known_snps[col[0]][col[1].to_i] = 1
+        end
+      end
+    end
     open_file
   end
   
@@ -455,10 +509,8 @@ class Gngm
   #- <tt>:max_depth => 10000000</tt> -maximum quality passing depth of coverage at a position for a SNP call
   #- <tt>:mapping_quality => 10.0</tt> -minimum mapping quality required for a read to be used in depth calculation
   #- <tt>:min_non_ref_count => 2</tt> -minimum number of reads not matching the reference for SNP to be called
-  #- <tt>:ignore_reference_n => true</tt> -ignore positions where the reference is N or n
-  #- <tt>:shore_map => false</tt> -use SHOREmap INTERVAL calculations as described in Anderson et al., 2009, Nature Methods 6. 8. Requires a file of known SNPs between the mapping line (eg Ler in Andersen et al.,) and a reference line (eg Col in Andersen et al).  
-  #- <tt>:snp_file => -file of known SNPs in format "reference sequence id \t position \t mapping line nucleotide identity \t reference line nucleotide identity". Only used when +:shore_map+ is set to true. Only SNPs listed in this file will be considered.
-  #When INDEL calling only one of <tt>:indels, :deletions_only, :insertions_only</tt> should be used. If all are +false+, SNPs are called.
+  #- <tt>:ignore_reference_n => true</tt> -ignore positions where the reference is N or n 
+  #When INDEL calling only one of <tt>:indels</tt> should be used. If +false+, SNPs are called.
   #
   #calculates or returns the value of the instance variable @snp_positions. Only gets positions the first time it is called, in subsequent calls pre-computed positions and statistics are returned, so changing parameters has no effect.
   def snp_positions(optsa={})
@@ -495,7 +547,10 @@ class Gngm
     
     if not @opts[:samtools][:g]
       @file.mpileup(@opts[:samtools]) do |pileup|
-        arr << [pileup.pos, pileup.discordant_chastity] if pileup.is_snp?(opts) and is_allowed_substitution?(pileup.ref_base, pileup.consensus,opts)
+       if pileup.is_snp?(opts) and is_allowed_substitution?(pileup.ref_base, pileup.consensus,opts) and not @known_snps[pileup.ref_name][pileup.pos]
+         arr << [pileup.pos, pileup.discordant_chastity]
+         write(pileup)
+       end
       end
     else
       @file.mpileup_plus(@opts[:samtools]) do |vcf|
@@ -503,9 +558,9 @@ class Gngm
         next if (opts[:ignore_reference_n] and vcf.ref =~ /N/i)
         ##indel use returns the vcf allele_frequency, not the ChDs (because calculating it is a mess... )
         if opts[:indels]
-          arr << [vcf.pos, vcf.non_ref_allele_freq] if vcf.is_indel?(opts) and is_allowed_substitution?(vcf.ref, vcf.alt,opts)
+          arr << [vcf.pos, vcf.non_ref_allele_freq] if vcf.is_indel?(opts) and is_allowed_substitution?(vcf.ref, vcf.alt,opts) and not @known_snps[vcf.ref][vcf.pos]
         else
-          arr << [vcf.pos, vcf.non_ref_allele_freq] if vcf.is_snp?(opts) and is_allowed_substitution?(vcf.ref, vcf.alt,opts)
+          arr << [vcf.pos, vcf.non_ref_allele_freq] if vcf.is_snp?(opts) and is_allowed_substitution?(vcf.ref, vcf.alt,opts) and not @known_snps[vcf.ref][vcf.pos]
         end
       end
     end
@@ -515,11 +570,6 @@ class Gngm
     arr
   end
   
-  private
-  def get_snp_positions_from_map(options={})
-    arr = []
-    opts = @opts[:variant_call].merge(options)
-  end
   
   #this does not filter snps, other than to check they are in the right region and are allowed substitutions.. no qual control, assumed to be done prior
   #text file is of format chr\tpos\tref\talt\tfreq\n
@@ -530,7 +580,7 @@ class Gngm
         chr,pos,ref,alt,freq = line.chomp.split("\t")
         pos = pos.to_i
         freq = freq.to_f
-        next unless chr == @opts[:chromosome] and pos >= @opts[:start] and pos <= @opts[:stop] and is_allowed_substitution?(ref,alt,opts)
+        next unless chr == @opts[:chromosome] and pos >= @opts[:start] and pos <= @opts[:stop] and is_allowed_substitution?(ref,alt,opts) and not @known_snps[chr][pos]
         arr << [pos, freq]
     end
     @snp_positions = arr
@@ -546,11 +596,23 @@ class Gngm
        next
      end 
       #old fashioned 10 col pileup format has extra fields we can use if needed
-     if pileup.is_snp?(opts) and not pileup.consensus_quality.nil? and not pileup.snp_quality.nil?
+     if pileup.is_snp?(opts) and not pileup.consensus_quality.nil? and not pileup.snp_quality.nil? and not @known_snps[pileup.ref_name][pileup.pos]
+       write(pileup)
        arr << [pileup.pos, pileup.discordant_chastity] if pileup.consensus_quality > opts[:min_consensus_quality] and pileup.snp_quality > opts[:min_snp_quality] and is_allowed_substitution?(pileup.ref_base, pileup.consensus,opts)
      end
     end
     @snp_positions = arr
+  end
+  
+  private
+  #writes out pileup/vcf files of SNPs that were used
+  def write(obj)
+    if @opts[:write_pileup] 
+      @pileup_outfile.puts(obj.to_s)
+    end
+    if @opts[:write_vcf]
+      @vcf_outfile.puts(obj.to_vcf)
+    end
   end
   
   private

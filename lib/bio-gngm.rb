@@ -10,4 +10,3 @@
 # was ever to get merged into the main bioruby tree.
 
 require 'bio/util/bio-gngm'
-require 'bio/util/mutation_effects'
