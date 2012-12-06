@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "bio-gngm"
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan MacLean"]
-  s.date = "2012-11-15"
+  s.date = "2012-12-06"
   s.description = "Identify causative mutations in a model genome from NGS reads using the NGM method."
   s.email = "maclean.daniel@gmail.com"
   s.extra_rdoc_files = [
@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
     "bio-gngm.gemspec",
     "doc/Bio.html",
     "doc/Bio/DB.html",
+    "doc/Bio/DB/FastaLengthDB.html",
     "doc/Bio/DB/Pileup.html",
     "doc/Bio/DB/Vcf.html",
     "doc/Bio/Util.html",
@@ -83,13 +84,16 @@ Gem::Specification.new do |s|
     "doc/rdoc.css",
     "doc/table_of_contents.html",
     "examples/.DS_Store",
+    "examples/Chr1.html",
+    "examples/gngm_qtl_mapping_HTML_maker_set_options.rb",
     "examples/make_histograms.rb",
     "examples/make_threads.rb",
     "examples/make_threads_isize.rb",
+    "examples/pileup.txt",
+    "examples/snps.vcf",
     "examples/use_indels.rb",
     "lib/bio-gngm.rb",
     "lib/bio/util/bio-gngm.rb",
-    "lib/bio/util/mutation_effects.rb",
     "scripts/get_subseq.rb",
     "scripts/make_histograms_laerfyve.rb",
     "scripts/make_histograms_laerfyve_stitched.rb",
